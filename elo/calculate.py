@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from __future__ import division
-from config import players, K
+from config import players, K, backup_file
 from pprint import pprint
 from os import system
 from operator import itemgetter
@@ -42,10 +42,37 @@ def won(a, b):
   record_win(players[a], players[b])
   system('clear')
   ls()
+  save()
 
 def addplayer(name, initial_score):
   """ Add a new player with name and initial score to the ladder. """
   players.append({'name': name, 'score': initial_score})
+  ls()
+
+def save(file=backup_file):
+  global players
+  if len(players) == 0: 
+    return
+  
+  outfile = open(file, 'w')
+  players = sorted(players, key=itemgetter('score'), reverse=True)
+  for i, p in enumerate(players):
+    outfile.write("%s\t%f\n" % (p['name'].ljust(30), p['score']))
+  outfile.close()
+
+def restore(file=backup_file):
+  infile = open(file, 'r')
+  text = infile.readlines()
+  infile.close()
+  new_players = []
+  for line in text:
+    new_players.append({'name':line.split('\t')[0].strip(), 'score':float(line.split('\t')[1].strip())})
+  
+  if len(new_players) == 0:
+    return
+
+  global players
+  players = new_players
   ls()
 
 def ls():
