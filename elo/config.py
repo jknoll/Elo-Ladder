@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
-players = [
-]
+players = []
 
 backup_file='./backup.txt'
 
