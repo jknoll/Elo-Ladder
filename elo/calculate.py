@@ -39,7 +39,10 @@ def write_log_line(player_a, player_b):
   pass
 
 def won(a, b):
-  record_win(players[a], players[b])
+  print("%s defeated %s" % (players[a]['name'], players[b]['name']))
+  resp = raw_input('Confirm (y/n): ')
+  if resp[0].lower() == 'y':
+    record_win(players[a], players[b])
   system('clear')
   ls()
   save()
